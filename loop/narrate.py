@@ -156,6 +156,18 @@ def detect_phases(timeline: dict, key_insight: str | None = None) -> list[Phase]
     ]
 
 
-def narrate(preset: dict, timeline: dict) -> list[Phase]:
-    """Convenience: detect phases using the preset's key insight."""
-    return detect_phases(timeline, key_insight=preset.get("key_insight"))
+def narrate(preset: dict, timeline: dict, loop_key: str | None = None) -> list[Phase]:
+    """Detect phases; use the loop's plain-language story captions when it has one.
+
+    Loops with a story (the six presets) get the richer, plainer per-phase copy
+    from stories.py. The generic template (no story) falls back to the built-in
+    templates + key-insight text.
+    """
+    phases = detect_phases(timeline, key_insight=preset.get("key_insight"))
+    from loop.stories import get_story  # local import avoids import cycle
+    story = get_story(loop_key) if loop_key else None
+    if story:
+        for p in phases:
+            if story.get(p.key):
+                p.text = story[p.key]
+    return phases

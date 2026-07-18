@@ -5,6 +5,29 @@ Per §9, the rule is: make the reasonable call, write it here, keep moving.
 
 ---
 
+## D7 — "Richer, but simpler UI" redesign (post-launch feedback)
+
+After v1 shipped, Umut's feedback: the charts were expert-facing and every loop
+looked like the same spike-and-dip. His steer: "go richer but make the UI
+simpler." Reconciled via **progressive disclosure + per-loop differentiation**:
+
+- **Simpler surface** (`app.py` screen 3): a plain-language headline + one-liner,
+  ONE clear picture, four everyday-language steps, and a "what this means"
+  callout. The multi-signal timeline, the drift %, and the clinical science moved
+  into a "Show the detail" expander. Plotly toolbars are hidden.
+- **Richer + distinct** (`loop/stories.py`, `loop/charts.py`): each loop now has
+  its own signature visual instead of the shared timeline — binge's two peaks
+  (wanting>liking), porn's escalation, nicotine's sinking floor, doomscrolling's
+  missing "full" line, alcohol's overnight rebound, caffeine's energy loan. Story
+  copy was written per-loop and adversarially checked for plain-language,
+  scientific accuracy, and the §6 tone rules (the tone-guard test now scans it).
+- Surface copy is jargon-free by rule; clinical terms live only in each story's
+  `detail_note`. `simulate.py` gained `episode_components()` (additive) to expose
+  the anticipation/consumption split the two-peak visual needs.
+
+Verified end-to-end in a browser: all six signature screens render and read
+correctly (screenshots in `docs/screenshots/loop_*.png`).
+
 ## D1 — Where the product lives
 
 The session harness handed a boilerplate instruction to develop on a branch

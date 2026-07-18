@@ -10,6 +10,14 @@ import pytest
 
 from loop.copy import COPY, PRESET_SUBTITLES, TAGLINE
 from loop.narrate import PHASE_TEMPLATES, INSIGHT_TEXT
+from loop.stories import LOOP_STORIES
+
+# Story fields that are shown to the user (all of them are, incl. detail_note in
+# the expander). Non-string metadata like "kind" is excluded by the isinstance check.
+_STORY_TEXT_FIELDS = [
+    "headline", "one_line", "trigger", "peak", "crash", "vulnerable",
+    "what_this_means", "signature_label", "detail_note",
+]
 
 # Banned as whole words (case-insensitive). "quit" would also catch nothing
 # legitimate here; word boundaries avoid false hits like "cleanly" (none exist).
@@ -38,6 +46,10 @@ def _user_facing_strings():
         out.append((f"phase[{k}]", v))
     for k, v in INSIGHT_TEXT.items():
         out.append((f"insight[{k}]", v))
+    for lk, story in LOOP_STORIES.items():
+        for field in _STORY_TEXT_FIELDS:
+            if isinstance(story.get(field), str):
+                out.append((f"story[{lk}][{field}]", story[field]))
     out.append(("tagline", TAGLINE))
     return out
 

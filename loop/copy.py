@@ -42,6 +42,20 @@ COPY: dict[str, dict] = {
         "legend_dopamine": "Dopamine",
         "legend_cortisol": "Cortisol (stress)",
         "legend_baseline": "Your baseline",
+        "phases_heading": "What's happening, step by step",
+        "what_this_means_label": "What this means",
+        "detail_expander": "Show the detail — the curves and the science",
+        "detail_science_label": "The science",
+        "science_frame": (
+            "Frame: Solomon & Corbit (1974), opponent-process theory · Koob & Le "
+            "Moal (2001), allostatic model · Berridge & Robinson, wanting vs. liking."
+        ),
+        "generic_headline": "Any dopamine loop has a shape.",
+        "generic_one_line": "A rise, a peak, and a dip below where you started — then a slow climb back.",
+        "generic_what_this_means": (
+            "This loop has a predictable shape, and seeing where you are on the "
+            "curve is a different thing from being run by it."
+        ),
 
         # Screen 4 — what if
         "s4_title": "What if?",

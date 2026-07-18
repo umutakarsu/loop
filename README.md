@@ -5,9 +5,12 @@
 Loop lets anyone map a dopamine-driven behavioural cycle — binge eating, porn,
 nicotine, doomscrolling, alcohol, caffeine — and watch what the underlying
 neurochemistry actually does over time. You pick a loop, answer three questions,
-and get a personalised, narrated curve showing the four phases every loop shares:
-the trigger, the peak, the crash **below** where you started, and the vulnerable
-window when the next trigger has the most power.
+and get a plain-language story with a picture built for that loop — the trigger,
+the peak, the crash **below** where you started, and the vulnerable window when
+the next trigger has the most power. Each loop gets its own signature visual
+(binge's two peaks, porn's escalation, nicotine's sinking floor, doomscrolling's
+missing "full" line, alcohol's overnight rebound, caffeine's energy loan), with
+the curves and the science tucked behind a "Show the detail" expander.
 
 The thesis is simple: **shame makes loops worse** (cortisol elevation lowers
 prefrontal control and raises the odds of the next episode). So Loop never
@@ -17,7 +20,9 @@ very different thing to hear than "I have no self-control."
 
 ![Pick your loop](docs/screenshots/01_pick.png)
 
-![A loop, narrated](docs/screenshots/03_binge_narrated.png)
+![Binge eating, narrated](docs/screenshots/loop_binge.png)
+
+![Alcohol — the overnight rebound](docs/screenshots/loop_alcohol.png)
 
 ## Run it locally
 
