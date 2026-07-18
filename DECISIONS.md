@@ -19,6 +19,23 @@ import from `brainnn`. `brainnn` is left untouched.
 named `loop/` as the spec's tree shows. The Streamlit entry point stays at repo
 root as `app.py`.
 
+## D5 — HuggingFace deploy (Task 8) is prepared, not executed
+
+Task 8 asks to deploy to HF Spaces under `umuutakarsu`. This session has no HF
+token, no HF CLI, and no cached HF credentials — deploying would require Umut's
+account secret, which is not available here and must not be fabricated. This is a
+capability limit, not a spec question, so per §9 the call is:
+
+- The repo is made **one-command deployable**: the README front-matter is a valid
+  HF Spaces config (`sdk: streamlit`, `app_file: app.py`), `app.py` is at the
+  repo root, and `requirements.txt` is torch-free for fast free-tier cold starts.
+- Exact deploy steps are documented in the README ("Deploy" section).
+- The full four-screen flow was verified end-to-end in a real browser
+  (see `docs/screenshots/`), so what would be deployed is known-good.
+
+**Action needed from Umut:** run the three documented commands with his HF login,
+or paste an HF token into a follow-up and this can be pushed for him.
+
 ## D4 — Where narration strings live
 
 §5 puts narration in `narrate.py`; §6 says "every user-facing string in ONE
