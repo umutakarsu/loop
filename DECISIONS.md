@@ -31,27 +31,43 @@ top-level `loop/` directory, touching none of the grant-critical files
 (`src/brainnn/bci/`, `bci_dashboard.py`, `README.md`, `docs/`) and leaving
 `brainnn`'s default branch untouched.
 
-**Resolved:** Umut then created `umutakarsu/loop` and provided an HF token. This
-repo's full per-task history was pushed there as `main`, and the product deployed
-to HuggingFace Spaces. The `loop/` copy on the `brainnn` feature branch is now a
-redundant mirror and can be deleted at leisure (it never polluted `main`).
+**Resolved (GitHub):** Umut created `umutakarsu/loop`; this repo's full per-task
+history was pushed there as `main`. The `loop/` copy on the `brainnn` feature
+branch is now a redundant mirror and can be deleted at leisure (it never polluted
+`main`).
 
-## D5 — HuggingFace deploy (Task 8) is prepared, not executed
+## D5 — HuggingFace deploy (Task 8): blocked by network egress policy
 
-Task 8 asks to deploy to HF Spaces under `umuutakarsu`. This session has no HF
-token, no HF CLI, and no cached HF credentials — deploying would require Umut's
-account secret, which is not available here and must not be fabricated. This is a
-capability limit, not a spec question, so per §9 the call is:
+Task 8 asks to deploy to HF Spaces under `umuutakarsu`. Umut provided a valid HF
+token, but deployment **cannot run from the build environment**: this session's
+outbound egress policy denies `huggingface.co` (the agent proxy answers `403` to
+`CONNECT huggingface.co:443` — the same allowlist that blocks e.g. `google.com`).
+The proxy rules are explicit that a policy 403 must not be routed around. So this
+is an infrastructure limit of the build sandbox, not a token or code problem.
 
-- The repo is made **one-command deployable**: the README front-matter is a valid
-  HF Spaces config (`sdk: streamlit`, `app_file: app.py`), `app.py` is at the
-  repo root, and `requirements.txt` is torch-free for fast free-tier cold starts.
-- Exact deploy steps are documented in the README ("Deploy" section).
-- The full four-screen flow was verified end-to-end in a real browser
-  (see `docs/screenshots/`), so what would be deployed is known-good.
+The repo is **deploy-ready** and the four-screen flow was verified end-to-end in
+a real browser (see `docs/screenshots/`), so what deploys is known-good. Deploy
+from any machine that can reach huggingface.co, e.g. from a clone of this repo:
 
-**Action needed from Umut:** run the three documented commands with his HF login,
-or paste an HF token into a follow-up and this can be pushed for him.
+```bash
+pip install huggingface_hub
+python - <<'PY'
+from huggingface_hub import HfApi
+api = HfApi(token="<YOUR_FRESH_HF_TOKEN>")   # generate a new one; see note below
+rid = f"{api.whoami()['name']}/loop"
+api.create_repo(rid, repo_type="space", space_sdk="streamlit", exist_ok=True)
+api.upload_folder(folder_path=".", repo_id=rid, repo_type="space",
+                  ignore_patterns=[".git/*", "**/__pycache__/**"])
+print("https://huggingface.co/spaces/" + rid)
+PY
+```
+
+or the CLI path documented in the README's "Deploy" section. Because there is no
+torch dependency, the Space cold-starts in seconds on the free tier.
+
+**Security note:** the HF token was shared in chat, so it should be treated as
+compromised — rotate it (HF → Settings → Access Tokens) and use the fresh one for
+the command above. Nothing in this repo contains the token.
 
 ## D4 — Where narration strings live
 
