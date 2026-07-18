@@ -19,6 +19,16 @@ import from `brainnn`. `brainnn` is left untouched.
 named `loop/` as the spec's tree shows. The Streamlit entry point stays at repo
 root as `app.py`.
 
+## D4 — Where narration strings live
+
+§5 puts narration in `narrate.py`; §6 says "every user-facing string in ONE
+file" (`copy.py`). These conflict for the phase narration. Call: the
+phase-narration templates live in `narrate.py` because they are tightly coupled
+to the phase-detection logic that fills their placeholders, and `copy.py` holds
+all *static* chrome (labels, questions, disclaimer, resources). Both files obey
+the §6 tone rules. `copy.py` documents this split at the top so a reader still
+has one place that points to every string.
+
 ## D3 — Branding constant
 
 Per §2 ("leave branding in one config constant so it is a one-line change"), the
