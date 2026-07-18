@@ -1,15 +1,3 @@
----
-title: Loop
-emoji: 🔁
-colorFrom: blue
-colorTo: red
-sdk: docker
-app_port: 8501
-pinned: false
-license: mit
-short_description: Map a behavioural loop and see the mechanism, not the shame.
----
-
 # Loop
 
 **Stop guessing why you keep doing this. See the mechanism.**
@@ -103,28 +91,18 @@ The suite verifies each preset produces a peak above baseline, an undershoot
 below baseline, and monotonic baseline erosion with repetition — and that no
 shame/prescription/gamification language leaks into any user-facing string.
 
-## Deploy (HuggingFace Spaces)
+## Deploy (Streamlit Community Cloud)
 
-This README's YAML front-matter is a valid HF Spaces config. The Space runs as a
-**Docker** Space (`sdk: docker`, port 8501 via the included `Dockerfile`) — HF's
-API does not currently accept the `streamlit` SDK for this account, and Docker
-runs the identical Streamlit app. To deploy to `umuutakarsu/loop`:
+Streamlit Community Cloud is free and deploys directly from this GitHub repo with
+no code changes:
 
-```bash
-pip install -U huggingface_hub
-python - <<'PY'
-from huggingface_hub import HfApi
-api = HfApi(token="<YOUR_WRITE_TOKEN>")
-rid = f"{api.whoami()['name']}/loop"
-api.create_repo(rid, repo_type="space", space_sdk="docker", exist_ok=True)
-api.upload_folder(folder_path=".", repo_id=rid, repo_type="space",
-                  ignore_patterns=[".git/*", "**/__pycache__/**"])
-print("https://huggingface.co/spaces/" + rid)
-PY
-```
+1. Go to https://share.streamlit.io and sign in with GitHub.
+2. **Create app → Deploy a public app from GitHub.**
+3. Repository `umutakarsu/loop`, branch `main`, main file path `app.py`.
+4. **Deploy.** It installs `requirements.txt` and serves the app at a public
+   `https://<name>.streamlit.app` URL.
 
-The image is a slim Python base with only numpy/plotly/streamlit (no torch), so
-the Space builds and cold-starts quickly on the free tier.
+Because there is no torch dependency, the environment resolves and boots quickly.
 
 ## License
 

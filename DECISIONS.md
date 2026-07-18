@@ -36,30 +36,33 @@ history was pushed there as `main`. The `loop/` copy on the `brainnn` feature
 branch is now a redundant mirror and can be deleted at leisure (it never polluted
 `main`).
 
-## D5 — HuggingFace deploy (Task 8): blocked by network egress policy
+## D5 — Deploy target: Streamlit Community Cloud (not HuggingFace)
 
-Task 8 asks to deploy to HF Spaces under `umuutakarsu`. Umut provided a valid HF
-token, but deployment **cannot run from the build environment**: this session's
-outbound egress policy denies `huggingface.co` (the agent proxy answers `403` to
-`CONNECT huggingface.co:443` — the same allowlist that blocks e.g. `google.com`).
-The proxy rules are explicit that a policy 403 must not be routed around. So this
-is an infrastructure limit of the build sandbox, not a token or code problem.
+Task 8 named HF Spaces, but HuggingFace turned out to be a dead end for a free
+Streamlit app, discovered in this order:
 
-The repo is **deploy-ready** and the four-screen flow was verified end-to-end in
-a real browser (see `docs/screenshots/`), so what deploys is known-good. Deploy
-from any machine that can reach huggingface.co, using the snippet in the README's
-"Deploy" section.
+1. Deploy could not run from the build sandbox at all — its egress policy denies
+   `huggingface.co` (proxy `403` on `CONNECT`, same allowlist that blocks
+   `google.com`); a policy 403 must not be routed around.
+2. Deploying from Umut's own machine, the token authenticated fine (`whoami` →
+   `umuutakarsu`), but `repos/create` with `space_sdk="streamlit"` returned
+   **400** — `expected one of "gradio"|"docker"|"static"`. HF no longer offers
+   the `streamlit` SDK for this account.
+3. Reconfigured as a **Docker** Space; `space_sdk="docker"` then returned
+   **402 Payment Required** — "Static Spaces are free for everyone, but hosting
+   Gradio and Docker Spaces on free cpu-basic requires a PRO subscription."
 
-**SDK note (discovered during deploy):** HF's `repos/create` API rejects the
-`streamlit` SDK for this account (`expected one of "gradio"|"docker"|"static"`).
-So the Space runs as a **Docker** Space via the repo's `Dockerfile`
-(`sdk: docker`, `app_port: 8501`). Docker runs the identical Streamlit app — no
-code change, still torch-free, still fast cold start. The Docker image was built
-and run locally and confirmed to serve the app before this was committed.
+Conclusion: HF's free tier only hosts *Static* Spaces, which cannot run a
+server-side Streamlit app. **Decision:** deploy to **Streamlit Community Cloud**
+instead — free, Streamlit-native, deploys directly from `github.com/umutakarsu/loop`
+with zero code changes. The HF-specific artifacts (README front-matter, the
+`Dockerfile`, and `.dockerignore`) were removed as no longer needed. Live URL:
+deployed by Umut at a `*.streamlit.app` address (see README "Deploy" section for
+the one-time GitHub-connect steps).
 
-**Security note:** the HF token was shared in chat, so it should be treated as
-compromised — rotate it (HF → Settings → Access Tokens) and use the fresh one for
-the command above. Nothing in this repo contains the token.
+**Security note:** the HF token was shared in chat, so it is compromised and must
+be rotated by Umut (HF → Settings → Access Tokens). It was never written to any
+file or commit in this repo (verified by grep across the full history).
 
 ## D4 — Where narration strings live
 
