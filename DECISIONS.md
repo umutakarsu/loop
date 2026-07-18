@@ -47,23 +47,15 @@ is an infrastructure limit of the build sandbox, not a token or code problem.
 
 The repo is **deploy-ready** and the four-screen flow was verified end-to-end in
 a real browser (see `docs/screenshots/`), so what deploys is known-good. Deploy
-from any machine that can reach huggingface.co, e.g. from a clone of this repo:
+from any machine that can reach huggingface.co, using the snippet in the README's
+"Deploy" section.
 
-```bash
-pip install huggingface_hub
-python - <<'PY'
-from huggingface_hub import HfApi
-api = HfApi(token="<YOUR_FRESH_HF_TOKEN>")   # generate a new one; see note below
-rid = f"{api.whoami()['name']}/loop"
-api.create_repo(rid, repo_type="space", space_sdk="streamlit", exist_ok=True)
-api.upload_folder(folder_path=".", repo_id=rid, repo_type="space",
-                  ignore_patterns=[".git/*", "**/__pycache__/**"])
-print("https://huggingface.co/spaces/" + rid)
-PY
-```
-
-or the CLI path documented in the README's "Deploy" section. Because there is no
-torch dependency, the Space cold-starts in seconds on the free tier.
+**SDK note (discovered during deploy):** HF's `repos/create` API rejects the
+`streamlit` SDK for this account (`expected one of "gradio"|"docker"|"static"`).
+So the Space runs as a **Docker** Space via the repo's `Dockerfile`
+(`sdk: docker`, `app_port: 8501`). Docker runs the identical Streamlit app — no
+code change, still torch-free, still fast cold start. The Docker image was built
+and run locally and confirmed to serve the app before this was committed.
 
 **Security note:** the HF token was shared in chat, so it should be treated as
 compromised — rotate it (HF → Settings → Access Tokens) and use the fresh one for
