@@ -19,35 +19,22 @@ import from `brainnn`. `brainnn` is left untouched.
 named `loop/` as the spec's tree shows. The Streamlit entry point stays at repo
 root as `app.py`.
 
-## D6 — Delivered to a brainnn feature branch (repo creation blocked)
+## D6 — Standalone repo (initially blocked, now resolved)
 
-Task 1 / §2 call for a standalone repo `umutakarsu/loop`. This session cannot
-create it: the GitHub integration returns 403 ("Resource not accessible by
-integration") on repo creation — its scope is limited to the existing
-`umutakarsu/brainnn` — and there is no personal token available to create one
-another way. Repo creation is something only Umut (or a GitHub App permission
-change) can do.
+Task 1 / §2 call for a standalone repo `umutakarsu/loop`. The build session could
+not create it (the GitHub integration returned 403 "Resource not accessible by
+integration"; its scope was limited to `umutakarsu/brainnn`, and no token was
+available to create one). As an interim durable home — the container is
+ephemeral — the full product was pushed to the feature branch
+`claude/product-pivot-implementation-5ldhcn` on `brainnn`, isolated under a
+top-level `loop/` directory, touching none of the grant-critical files
+(`src/brainnn/bci/`, `bci_dashboard.py`, `README.md`, `docs/`) and leaving
+`brainnn`'s default branch untouched.
 
-The execution container is ephemeral, so leaving the finished work as local-only
-commits would risk losing it. The only durable remote reachable here is
-`brainnn`. So the work is pushed to the harness-designated feature branch
-`claude/product-pivot-implementation-5ldhcn` on `brainnn`, with the entire
-product isolated under a top-level `loop/` directory. This:
-
-- touches NONE of the grant-critical files (`src/brainnn/bci/`,
-  `bci_dashboard.py`, `README.md`, `docs/`) — only a new `loop/` dir is added;
-- leaves `brainnn`'s default branch (`main`) untouched, so grant reviewers who
-  read `main` see the clean research repo;
-- keeps the full per-task commit history via `git subtree`.
-
-**To reach the intended state**, extract `loop/` into a real repo — either:
-1. Umut creates an empty `umutakarsu/loop` (or grants the GitHub App
-   repo-creation rights) and this session pushes there; or
-2. `git subtree split --prefix=loop -b loop-only` then push that branch to the
-   new repo. `EXTRACTION.md` in `loop/` has the exact commands.
-
-The `loop/` tree is fully standalone (own README, LICENSE, requirements, tests)
-and requires no edits to become its own repo.
+**Resolved:** Umut then created `umutakarsu/loop` and provided an HF token. This
+repo's full per-task history was pushed there as `main`, and the product deployed
+to HuggingFace Spaces. The `loop/` copy on the `brainnn` feature branch is now a
+redundant mirror and can be deleted at leisure (it never polluted `main`).
 
 ## D5 — HuggingFace deploy (Task 8) is prepared, not executed
 
