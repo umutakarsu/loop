@@ -86,17 +86,20 @@ def timeline_figure(timeline: dict, phases: list) -> go.Figure:
         hovertemplate="cortisol %{y:.2f}<extra></extra>",
     ))
 
-    # Phase markers.
-    for p in phases:
+    # Phase markers. Stagger label heights so fast loops (trigger/peak nearly
+    # coincident) don't collide.
+    label_heights = [1.10, 1.02, 1.10, 1.02]
+    for i, p in enumerate(phases):
         fig.add_annotation(
-            x=p.t_marker, y=1.02, yref="paper", showarrow=False,
-            text=f"<b>{p.label}</b>", font=dict(color=PHASE_COLORS[p.key], size=12),
+            x=p.t_marker, y=label_heights[i % len(label_heights)], yref="paper",
+            showarrow=False, text=f"<b>{p.label}</b>",
+            font=dict(color=PHASE_COLORS[p.key], size=12),
         )
         fig.add_vline(x=p.t_marker, line=dict(color=PHASE_COLORS[p.key],
                       width=1, dash="dot"), opacity=0.4)
 
     fig.update_layout(
-        height=430, margin=dict(l=10, r=10, t=40, b=10),
+        height=430, margin=dict(l=10, r=10, t=56, b=10),
         xaxis_title=C.t("axis_time"), yaxis_title=C.t("axis_level"),
         legend=dict(orientation="h", yanchor="bottom", y=-0.28, x=0),
         hovermode="x unified",
