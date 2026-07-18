@@ -119,16 +119,18 @@ def episodes_from_frequency_duration(frequency_key: str, duration_key: str) -> f
 # Single-episode curves
 # ---------------------------------------------------------------------------
 
-def episode_curve(
+def episode_components(
     t: np.ndarray,
     preset: dict,
     intensity: float = 5.0,
     baseline: float = BASELINE,
-) -> np.ndarray:
-    """Dopamine trace for one episode, onset at t=0. `t` is hours (>=0 region used).
+) -> dict:
+    """The individual deviations that make up one episode's dopamine trace.
 
-    Returns an array the same shape as `t`. Guaranteed to peak above `baseline`
-    and to dip below `baseline` somewhere on a sufficiently long window.
+    Returns a dict of arrays (same shape as `t`): `anticipation`, `consumption`,
+    `undershoot`, plus the assembled `dopamine` and the scalar `baseline`. Exposed
+    so the UI can draw a loop's signature picture — e.g. binge eating's two
+    separate peaks (anticipation > consumption = wanting > liking).
     """
     t = np.asarray(t, dtype=float)
     scale = intensity_scale(intensity)
@@ -163,7 +165,28 @@ def episode_curve(
     bump = np.where(t >= 0.0, bump, 0.0)
     undershoot = -depth * baseline * bump
 
-    return baseline + anticipation + consumption + undershoot
+    dopamine = baseline + anticipation + consumption + undershoot
+    return {
+        "anticipation": anticipation,
+        "consumption": consumption,
+        "undershoot": undershoot,
+        "dopamine": dopamine,
+        "baseline": baseline,
+    }
+
+
+def episode_curve(
+    t: np.ndarray,
+    preset: dict,
+    intensity: float = 5.0,
+    baseline: float = BASELINE,
+) -> np.ndarray:
+    """Dopamine trace for one episode, onset at t=0. `t` is hours (>=0 region used).
+
+    Returns an array the same shape as `t`. Guaranteed to peak above `baseline`
+    and to dip below `baseline` somewhere on a sufficiently long window.
+    """
+    return episode_components(t, preset, intensity=intensity, baseline=baseline)["dopamine"]
 
 
 def cortisol_curve(t: np.ndarray, preset: dict, intensity: float = 5.0) -> np.ndarray:
