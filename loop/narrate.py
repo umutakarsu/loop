@@ -156,6 +156,7 @@ def detect_phases(timeline: dict, key_insight: str | None = None) -> list[Phase]
     ]
 
 
+# NB: narrate() takes `loop_key` (used by app.py screen 3) — keep it in sync there.
 def narrate(preset: dict, timeline: dict, loop_key: str | None = None) -> list[Phase]:
     """Detect phases; use the loop's plain-language story captions when it has one.
 
