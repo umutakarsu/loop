@@ -269,6 +269,7 @@ def screen_whatif() -> None:
 
 def main() -> None:
     _init_state()
+    st.warning(C.t("experimental_banner"))
     screen = st.session_state.screen
     if screen == 1 or st.session_state.preset_key is None:
         screen_pick()

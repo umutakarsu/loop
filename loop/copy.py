@@ -23,6 +23,14 @@ TAGLINE = "Stop guessing why you keep doing this. See the mechanism."
 
 COPY: dict[str, dict] = {
     "en": {
+        # Top-of-page experimental banner (shown on every screen)
+        "experimental_banner": (
+            "🧪 **Experimental project — not a professional or medical product.** "
+            "Loop is a solo, early-stage experiment. The numbers are rough "
+            "educational approximations, not measurements of your brain, and this "
+            "is not therapy, diagnosis, or advice."
+        ),
+
         # Screen 1 — pick your loop
         "s1_title": "Which loop do you want to understand?",
         "s1_subtitle": "Pick the one you want to see the shape of.",
