@@ -42,6 +42,21 @@ COPY: dict[str, dict] = {
         "legend_dopamine": "Dopamine",
         "legend_cortisol": "Cortisol (stress)",
         "legend_baseline": "Your baseline",
+        "dopamine_meter_heading": "Dopamine, next to your normal (100%)",
+        "meter_peak": "Peak",
+        "meter_crash": "Lowest dip",
+        "meter_baseline": "Baseline now",
+        "dopamine_meter_caption": (
+            "≈ rough, educational estimates — not measurements. Peak and dip are "
+            "measured against your baseline right now; \"baseline now\" shows how "
+            "far that baseline has itself drifted from your original normal (100%) "
+            "after the repetitions you described."
+        ),
+        "dopamine_secondary_note": (
+            "Heads up: for this loop dopamine isn't the main driver — {driver} "
+            "is. These numbers are the smaller dopamine side of the story; the "
+            "detail below explains the rest."
+        ),
         "phases_heading": "What's happening, step by step",
         "what_this_means_label": "What this means",
         "detail_expander": "Show the detail — the curves and the science",

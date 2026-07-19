@@ -183,6 +183,24 @@ def screen_narrated() -> None:
         fig = charts.detail_timeline_figure(timeline, phases)
     st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CONFIG)
 
+    # Dopamine level indicator — approximate, and honest about non-dopamine loops.
+    # Peak/dip are measured against the CURRENT baseline (a spike is always a
+    # spike); "baseline now" carries the allostatic erosion vs the original 100%.
+    dop = timeline["dopamine"]
+    base_val = float(timeline["effective_baseline"]) or 1e-6
+    peak_rel = int(round((float(dop.max()) / base_val - 1.0) * 100))
+    dip_rel = int(round((float(dop.min()) / base_val - 1.0) * 100))
+    base_pct = int(round(base_val * 100))
+    st.markdown(f"**{C.t('dopamine_meter_heading')}**")
+    m1, m2, m3 = st.columns(3)
+    m1.metric(C.t("meter_peak"), f"~+{peak_rel}%", help="above your baseline right now")
+    m2.metric(C.t("meter_crash"), f"~{dip_rel}%", help="below your baseline right now")
+    m3.metric(C.t("meter_baseline"), f"~{base_pct}%", f"{base_pct - 100:+d}% vs original")
+    st.caption(C.t("dopamine_meter_caption"))
+    if story and not story.get("dopamine_primary", True):
+        st.caption("ℹ️ " + C.t("dopamine_secondary_note").format(
+            driver=story.get("main_driver", "another system")))
+
     # Four plain steps.
     st.markdown(f"**{C.t('phases_heading')}**")
     for p in phases:

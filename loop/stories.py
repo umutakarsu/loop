@@ -19,6 +19,8 @@ from __future__ import annotations
 LOOP_STORIES: dict[str, dict] = {
     "binge_eating": {
         "kind": "two_peaks",
+        "dopamine_primary": True,
+        "main_driver": "",
         "headline": "Your brain wants it more than it enjoys it.",
         "one_line": "The build-up feels huge, the actual eating feels smaller, and then you drop below where you started.",
         "trigger": "Something sets it off — a mood, a time of day, a place. Before you've eaten a single bite, the pull is already climbing. That rising feeling is the wanting, and it shows up first.",
@@ -31,6 +33,8 @@ LOOP_STORIES: dict[str, dict] = {
     },
     "porn": {
         "kind": "escalation",
+        "dopamine_primary": True,
+        "main_driver": "",
         "headline": "Each time, it takes more to feel the same.",
         "one_line": "A huge, fast spike — then a drop below where you started, and next time the bar sits higher.",
         "trigger": "Something grabs your attention and the pull kicks in. What drives this loop more than most is the chase for something new — and the wanting climbs before anything has actually happened.",
@@ -43,6 +47,8 @@ LOOP_STORIES: dict[str, dict] = {
     },
     "nicotine": {
         "kind": "sinking_floor",
+        "dopamine_primary": True,
+        "main_driver": "",
         "headline": "Each hit fixes the craving the last one caused.",
         "one_line": "It doesn't lift you above normal — it lowers your normal, so each one just hauls you back up.",
         "trigger": "A few hours since the last one, and a low restlessness starts to build. Then a coffee, a step outside, a stressful minute — and the pull is already there before you've reached for anything.",
@@ -55,6 +61,8 @@ LOOP_STORIES: dict[str, dict] = {
     },
     "doomscrolling": {
         "kind": "no_satiety",
+        "dopamine_primary": True,
+        "main_driver": "",
         "headline": "Your brain never gets the signal to stop.",
         "one_line": "Each swipe is a tiny maybe-reward and the feed never ends, so nothing ever tells you you're done.",
         "trigger": "A dull second, a notification, a queue to stand in, and your thumb has opened the app before you've decided anything.",
@@ -67,6 +75,8 @@ LOOP_STORIES: dict[str, dict] = {
     },
     "alcohol": {
         "kind": "overnight_rebound",
+        "dopamine_primary": False,
+        "main_driver": "GABA calm, then a glutamate rebound",
         "headline": "The calm tonight becomes the edge tomorrow morning.",
         "one_line": "It turns the volume down on your nerves tonight, so they come back up louder in the morning.",
         "trigger": "Something signals it's time — the end of a long day, a social thing, a knot of stress — and the pull to take the edge off shows up before the first sip.",
@@ -79,6 +89,8 @@ LOOP_STORIES: dict[str, dict] = {
     },
     "caffeine": {
         "kind": "energy_loan",
+        "dopamine_primary": False,
+        "main_driver": "adenosine (blocked, not boosted)",
         "headline": "You're borrowing energy, not making it.",
         "one_line": "Caffeine doesn't add energy — it hides the tiredness you already have, then hands it back later.",
         "trigger": "The afternoon slump hits — or it's just the time you always have one — and you reach for the cup before you've really decided to.",
